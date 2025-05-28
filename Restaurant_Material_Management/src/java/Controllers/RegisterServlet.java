@@ -38,16 +38,6 @@ public class RegisterServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     } 
 
@@ -75,17 +65,17 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-      
-       String fullName = request.getParameter("fullName");
+
+        String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String gender = request.getParameter("gender");
         String dateOfBirth = request.getParameter("dateOfBirth");
-        String hometown = request.getParameter("hometown");
-        int roleId = 1;
+        String address = request.getParameter("address");
+        int roleId = Integer.parseInt(request.getParameter("roleId"));
 
         try {
-            boolean registerSuccess = userDAO.register(fullName, email, password, gender, dateOfBirth, hometown, roleId);
+            boolean registerSuccess = userDAO.register(fullName, email, password, gender, dateOfBirth, address, roleId);
             if (registerSuccess) {
                 response.sendRedirect("login.jsp?message=Registration successful! Please login.");
             } else {
@@ -94,9 +84,8 @@ public class RegisterServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new ServletException("Registration failed: " + e.getMessage(), e);
         }
-        }
-
-    /** 
+    }
+        /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

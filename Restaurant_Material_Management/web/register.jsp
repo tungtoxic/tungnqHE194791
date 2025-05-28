@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="DAL.RoleDAO"%>
+<%@page import="Models.Role"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,7 +127,17 @@
                 <option value="Other">Khác</option>
             </select>
             <input type="date" name="dateOfBirth" required>
-            <input type="text" name="hometown" placeholder="Quê quán" required>
+            <input type="text" name="address" placeholder="Địa chỉ" required>
+            <%
+                RoleDAO roleDAO = new RoleDAO();
+                List<Role> roles = roleDAO.getAllRoles();
+            %>
+            <select name="roleId" required>
+                <option value="">Chọn vai trò</option>
+                <% for (Role role : roles) { %>
+                    <option value="<%= role.getRoleId() %>"><%= role.getRoleName() %></option>
+                <% } %>
+            </select>
             <input type="submit" value="Đăng ký">
         </form>
         <a href="login.jsp">Đã có tài khoản? Đăng nhập ngay.</a>
