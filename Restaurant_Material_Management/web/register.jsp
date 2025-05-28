@@ -1,10 +1,16 @@
+<%-- 
+    Document   : register
+    Created on : May 28, 2025, 3:12:43 PM
+    Author     : Nguyễn Tùng
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập</title>
+    <title>Đăng ký</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -41,7 +47,7 @@
             margin-bottom: 20px;
             color: #00c4ff;
         }
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], input[type="date"], select {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -73,6 +79,22 @@
             font-size: 14px;
             text-align: center;
         }
+        .success {
+            color: #00ff00;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+        a {
+            color: #00c4ff;
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #66b0ff;
+        }
         @media (max-width: 400px) {
             .container {
                 padding: 20px;
@@ -84,16 +106,28 @@
 <body>
     <div class="container">
         <div class="logo">Hệ Thống Quản Lý Vật Tư Nhà Hàng</div>
-        <h2>Đăng nhập</h2>
+        <h2>Đăng ký</h2>
         <% if (request.getParameter("error") != null) { %>
-            <p class="error">Email hoặc mật khẩu không đúng!</p>
+            <p class="error"><%= request.getParameter("error") %></p>
         <% } %>
-        <form action="LoginServlet" method="post">
-            <input type="text" name="email" placeholder="Email" required>
+        <% if (request.getParameter("message") != null) { %>
+            <p class="success"><%= request.getParameter("message") %></p>
+        <% } %>
+        <form action="RegisterServlet" method="post">
+            <input type="text" name="fullName" placeholder="Họ và tên" required>
+            <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Mật khẩu" required>
-            <input type="submit" value="Đăng nhập">
+            <select name="gender" required>
+                <option value="">Chọn giới tính</option>
+                <option value="Male">Nam</option>
+                <option value="Female">Nữ</option>
+                <option value="Other">Khác</option>
+            </select>
+            <input type="date" name="dateOfBirth" required>
+            <input type="text" name="hometown" placeholder="Quê quán" required>
+            <input type="submit" value="Đăng ký">
         </form>
-        <a href="register.jsp">Chưa có tài khoản? Đăng kí ngay.</a>
+        <a href="login.jsp">Đã có tài khoản? Đăng nhập ngay.</a>
     </div>
 </body>
 </html>

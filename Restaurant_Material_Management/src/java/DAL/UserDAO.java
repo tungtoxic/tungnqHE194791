@@ -41,4 +41,32 @@ public class UserDAO {
             return null;
         }
     }
+    public boolean register(String fullName, String email, String password, String gender, String dateOfBirth, String address, int roleId) throws SQLException {
+        String checkEmailSql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        String insertSql = "INSERT INTO users (full_name, email, password, gender, date_of_birth, address, role_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = dbContext.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkEmailSql);
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+            // Kiểm tra email đã tồn tại
+            checkStmt.setString(1, email);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                dbContext.closeConnection(conn);
+                return false; // Email đã tồn tại
+            }
+
+            // Thêm người dùng mới
+            insertStmt.setString(1, fullName);
+            insertStmt.setString(2, email);
+            insertStmt.setString(3, password);
+            insertStmt.setString(4, gender);
+            insertStmt.setString(5, dateOfBirth); // Định dạng: YYYY-MM-DD
+            insertStmt.setString(6, address);
+            insertStmt.setInt(7, roleId);
+            int rowsAffected = insertStmt.executeUpdate();
+            dbContext.closeConnection(conn);
+            return rowsAffected > 0;
+        }
+    }
 }
